@@ -1,39 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-
-import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 
-import { UserFindDto } from './dto/userFindDto';
+import { UpdateUserDto } from './update-user.dto';
+import { CreateUserDto } from './create-user.dto';
+// import { HashService } from './hash.service';
 import { User, UserDocument } from './user.schema';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async setCurrentRefreshToken(refreshToken: string, userId: string) {
-    const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-    await this.userModel.findOneAndUpdate(
-      { _id: userId },
-      {
-        currentHashedRefreshToken,
-      },
-    );
-  }
-  async findUser(email: string) {
-    const user = await this.userModel.findOne({ email: email });
-
-    return user;
+  async create(createUserDto: CreateUserDto): Promise<UserDocument> {
+    const createdUser = new this.userModel(createUserDto);
+    return createdUser.save();
   }
 
-  async saveUser({ name, image, email, isRegisteredWithGoogle }: UserFindDto) {
-    const newUser = new this.userModel({
-      email,
-      name,
-      image,
-      isRegisteredWithGoogle,
-    });
-    await newUser.save();
-    return newUser;
+  async findAll(): Promise<UserDocument[]> {
+    return this.userModel.find().exec();
+  }
+
+  async findById(id: string): Promise<UserDocument> {
+    return this.userModel.findById(id);
+  }
+
+  async findByUsername(username: string): Promise<UserDocument> {
+    return this.userModel.findOne({ username }).exec();
+  }
+
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserDocument> {
+    return this.userModel
+      .findByIdAndUpdate(id, updateUserDto, { new: true })
+      .exec();
+  }
+
+  async remove(id: string): Promise<UserDocument> {
+    return this.userModel.findByIdAndDelete(id).exec();
   }
 }

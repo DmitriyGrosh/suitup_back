@@ -1,27 +1,44 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  Body,
+  Get,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+
 import { AuthService } from './auth.service';
-import { TokenVerificationDto } from './dto/tokenVerificationDto';
-import { response } from 'express';
+import { CreateUserDto } from '../user/create-user.dto';
+import { AuthDto } from './auth.dto';
+import { AccessTokenGuard } from '../guards/accessToken.guard';
+import { RefreshTokenGuard } from '../guards/refreshToken.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-  @Post('/login')
-  async login(
-    @Body() tokenData: TokenVerificationDto,
-    @Req() request: Request,
-  ): Promise<any> {
-    const { token } = tokenData;
+  constructor(private authService: AuthService) {}
 
-    const { accessTokenCookie, refreshTokenCookie, user } =
-      await this.authService.login(token);
+  @Post('signup')
+  signup(@Body() createUserDto: CreateUserDto) {
+    return this.authService.signUp(createUserDto);
+  }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    request.res.setHeader('Set-Cookie', [
-      accessTokenCookie,
-      refreshTokenCookie,
-    ]);
-    return user;
+  @Post('signin')
+  signin(@Body() data: AuthDto) {
+    return this.authService.signIn(data);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('logout')
+  logout(@Req() req) {
+    this.authService.logout(req.user['sub']);
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Get('refresh')
+  refreshTokens(@Req() req) {
+    const userId = req.user['sub'];
+    const refreshToken = req.user['refreshToken'];
+    return this.authService.refreshTokens(userId, refreshToken);
   }
 }

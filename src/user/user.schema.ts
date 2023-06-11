@@ -1,33 +1,21 @@
-import { Prop, Schema, SchemaFactory, PropOptions } from '@nestjs/mongoose';
+import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
 
 export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  @Prop({
-    type: String,
-    default: function genUUID() {
-      return uuidv4();
-    },
-  })
-  _id?: string;
-
-  @Prop()
-  currentHashedRefreshToken?: string;
-
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
-  email: string;
+  @Prop({ required: true, unique: true })
+  username: string;
+
+  @Prop({ required: true })
+  password: string;
 
   @Prop()
-  image: string;
-
-  @Prop()
-  isRegisteredWithGoogle: boolean;
+  refreshToken: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
