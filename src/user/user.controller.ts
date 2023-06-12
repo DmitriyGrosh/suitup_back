@@ -7,6 +7,7 @@ import {
   UseGuards,
   Patch,
   Delete,
+  Query,
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
@@ -29,6 +30,12 @@ export class UserController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @Get('username')
+  findByUsername(@Query() { username }: { username: string }) {
+    return this.userService.findByUsername(username);
+  }
+
+  @UseGuards(AccessTokenGuard)
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.userService.findById(id);
@@ -45,37 +52,4 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(id);
-  // }
-  //
-  // @UseGuards(AuthGuard('jwt'))
-  // @Get(':id')
-  // findById(@Param('id') id: string) {
-  //   return this.userService.findById(id);
-  // }
-  //
-  // @UseGuards(AuthGuard('jwt'))
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.userService.update(id, updateUserDto);
-  // }
-  //
-  // @UseGuards(AuthGuard('jwt'))
-  // @Get('all')
-  // findAll() {
-  //   return this.userService.findAll();
-  // }
-  //
-  // @UseGuards(AuthGuard('jwt'))
-  // @Get('username')
-  // getUserByUsername(@Param() param) {
-  //   return this.userService.getUserByUsername(param.username);
-  // }
-  // @Post('register')
-  // registerUser(@Body() createUserDto: CreateUserDto) {
-  //   return this.userService.registerUser(createUserDto);
-  // }
 }

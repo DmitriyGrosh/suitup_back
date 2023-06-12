@@ -7,6 +7,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { AddressController } from './address/address.controller';
+import { AddressModule } from './address/address.module';
+import { PostModule } from './post/post.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -18,8 +22,11 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     AuthModule,
     PassportModule,
+    AddressModule,
+    PostModule,
+    CategoryModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AddressController],
   providers: [AppService],
 })
 export class AppModule {}

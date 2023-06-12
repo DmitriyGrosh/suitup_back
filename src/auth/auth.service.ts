@@ -34,6 +34,7 @@ export class AuthService {
       ...createUserDto,
       password: hash,
     });
+
     const tokens = await this.getTokens(newUser._id, newUser.username);
     await this.updateRefreshToken(newUser._id, tokens.refreshToken);
     return tokens;
