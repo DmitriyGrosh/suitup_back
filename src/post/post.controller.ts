@@ -19,10 +19,9 @@ import ParamsWithId from '../utils/paramsWithId';
 import PostDto from './dto/post.dto';
 import UpdatePostDto from './dto/update.post.dto';
 import RequestWithUser from '../user/requestWithUser.interface';
-
-let PostModel;
+import { Post as PostModel } from './post.schema';
 @Controller('post')
-@UseInterceptors(MongooseClassSerializerInterceptor(PostModel))
+// @UseInterceptors(MongooseClassSerializerInterceptor(PostModel))
 export class PostController {
   constructor(private readonly postsService: PostService) {}
 

@@ -8,12 +8,14 @@ import {
   Patch,
   Delete,
   Query,
+  Req,
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
 import { CreateUserDto } from './create-user.dto';
 import { UpdateUserDto } from './update-user.dto';
 import { AccessTokenGuard } from '../guards/accessToken.guard';
+import RequestWithUser from './requestWithUser.interface';
 
 @Controller('user')
 export class UserController {
@@ -24,7 +26,7 @@ export class UserController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Get()
+  @Get('all')
   findAll() {
     return this.userService.findAll();
   }
@@ -38,6 +40,14 @@ export class UserController {
   @UseGuards(AccessTokenGuard)
   @Get(':id')
   findById(@Param('id') id: string) {
+    return this.userService.findById(id);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get()
+  findByToken(@Req() req: RequestWithUser) {
+    const id = req.user._id.toHexString();
+
     return this.userService.findById(id);
   }
 

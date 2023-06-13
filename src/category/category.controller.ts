@@ -20,7 +20,7 @@ import RequestWithUser from '../user/requestWithUser.interface';
 import MongooseClassSerializerInterceptor from '../utils/mongooseClassSerializer.interceptor';
 
 @Controller('category')
-@UseInterceptors(MongooseClassSerializerInterceptor(Category))
+// @UseInterceptors(MongooseClassSerializerInterceptor(Category))
 export class CategoryController {
   constructor(private readonly categoriesService: CategoryService) {}
 

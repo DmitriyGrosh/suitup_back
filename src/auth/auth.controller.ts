@@ -18,7 +18,7 @@ import MongooseClassSerializerInterceptor from '../utils/mongooseClassSerializer
 import { User } from '../user/user.schema';
 
 @Controller('auth')
-@UseInterceptors(MongooseClassSerializerInterceptor(User))
+// @UseInterceptors(MongooseClassSerializerInterceptor(User))
 export class AuthController {
   constructor(private authService: AuthService) {}
 

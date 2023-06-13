@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model, ClientSession } from 'mongoose';
+import { FilterQuery, Model, ClientSession, Types } from 'mongoose';
 
 import { User } from '../user/user.schema';
 import { Post, PostDocument } from './post.schema';
@@ -33,25 +33,27 @@ export class PostService {
       .sort({ _id: 1 })
       .skip(documentsToSkip)
       .populate('author')
-      .populate('categories')
-      .populate('series');
+      .populate('categories');
+    // .populate('series');
 
     if (limitOfDocuments) {
       findQuery.limit(limitOfDocuments);
     }
 
     const results = await findQuery;
+    console.log('==========>results', results);
     const count = await this.postModel.count();
+    console.log('==========>count', count);
 
-    return { results, count };
+    return results;
   }
 
   async findOne(id: string) {
     const post = await this.postModel
       .findById(id)
       .populate('author')
-      .populate('categories')
-      .populate('series');
+      .populate('categories');
+    // .populate('series');
     if (!post) {
       throw new NotFoundException();
     }
@@ -63,9 +65,7 @@ export class PostService {
       ...postData,
       author,
     });
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    await createdPost.populate('categories').execPopulate();
+    await createdPost.populate('categories');
     return createdPost.save();
   }
 
@@ -73,8 +73,8 @@ export class PostService {
     const post = await this.postModel
       .findOneAndReplace({ _id: id }, postData, { new: true })
       .populate('author')
-      .populate('categories')
-      .populate('series');
+      .populate('categories');
+    // .populate('series');
     if (!post) {
       throw new NotFoundException();
     }
