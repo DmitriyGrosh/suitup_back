@@ -43,7 +43,7 @@ export class PostService {
     const results = await findQuery;
     console.log('==========>results', results);
     const count = await this.postModel.count();
-    console.log('==========>count', count);
+    console.log('==========>count 123', count);
 
     return results;
   }
