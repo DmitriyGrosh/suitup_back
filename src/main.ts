@@ -5,8 +5,13 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 	app.enableCors({
-		allowedHeaders: ['content-type'],
-		origin: true
+		allowedHeaders: 'Access-Control-Allow-Origin',
+		credentials: true,
+		origin: [
+			'http://localhost:3000/',
+			'http://194.67.110.39/',
+			'http://suit-up.ru'
+		]
 	});
 
 	app.setGlobalPrefix('api');
