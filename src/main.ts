@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-	const whitelist = ['http://localhost:3000/', 'http://194.67.110.39/', 'http://suit-up.ru', 'http://suit-up.ru/', 'http://www.suit-up.ru'];
+	const whitelist = ['http://localhost:3000', 'http://194.67.110.39/', 'http://suit-up.ru', 'http://suit-up.ru/', 'http://www.suit-up.ru'];
 	app.enableCors({
 		origin: function (origin, callback) {
 			if (whitelist.indexOf(origin) !== -1) {
