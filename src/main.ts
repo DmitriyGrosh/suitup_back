@@ -8,11 +8,14 @@ async function bootstrap() {
 	app.enableCors({
 		origin: function (origin, callback) {
 			if (whitelist.indexOf(origin) !== -1) {
+				console.log('==========>1', 1);
 				console.log("allowed cors for:", origin)
 				callback(null, true)
 			} else {
+				console.log('==========>2', 2);
 				console.log("blocked cors for:", origin)
-				callback(new Error('Not allowed by CORS'))
+				// callback(new Error('Not allowed by CORS'))
+				callback(null, true)
 			}
 		},
 		allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
