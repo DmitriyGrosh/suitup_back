@@ -18,7 +18,7 @@ import MongooseClassSerializerInterceptor from '../utils/mongooseClassSerializer
 import { User } from '../user/user.schema';
 
 @Controller('auth')
-// @UseInterceptors(MongooseClassSerializerInterceptor(User))
+@UseInterceptors(MongooseClassSerializerInterceptor(User))
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -35,6 +35,8 @@ export class AuthController {
   @UseGuards(AccessTokenGuard)
   @Get('logout')
   logout(@Req() req) {
+	  console.log('==========>1', 1);
+		console.log('==========>req.user', req.user);
     this.authService.logout(req.user['sub']);
   }
 

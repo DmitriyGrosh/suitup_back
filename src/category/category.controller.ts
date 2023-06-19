@@ -24,7 +24,7 @@ import MongooseClassSerializerInterceptor from '../utils/mongooseClassSerializer
 export class CategoryController {
   constructor(private readonly categoriesService: CategoryService) {}
 
-  @UseGuards(AccessTokenGuard)
+  // @UseGuards(AccessTokenGuard)
   @Get()
   async getAllCategories() {
     return this.categoriesService.findAll();

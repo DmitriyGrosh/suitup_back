@@ -37,7 +37,11 @@ export class AuthService {
 
     const tokens = await this.getTokens(newUser._id, newUser.username);
     await this.updateRefreshToken(newUser._id, tokens.refreshToken);
-    return tokens;
+    return {
+	    ...tokens,
+	    id: newUser.id,
+	    username: newUser.username,
+    };
   }
 
   async signIn(data: AuthDto) {
@@ -49,7 +53,12 @@ export class AuthService {
       throw new BadRequestException('Password is incorrect');
     const tokens = await this.getTokens(user._id, user.username);
     await this.updateRefreshToken(user._id, tokens.refreshToken);
-    return tokens;
+
+    return {
+      ...tokens,
+      id: user.id,
+      username: user.username,
+    };
   }
 
   async logout(userId: string) {

@@ -25,7 +25,7 @@ import { Post as PostModel } from './post.schema';
 export class PostController {
   constructor(private readonly postsService: PostService) {}
 
-  @UseGuards(AccessTokenGuard)
+  // @UseGuards(AccessTokenGuard)
   @Get()
   async getAllPosts(
     @Query() { skip, limit, startId }: PaginationParams,
