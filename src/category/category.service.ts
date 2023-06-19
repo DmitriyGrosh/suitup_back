@@ -12,7 +12,7 @@ export class CategoryService {
   ) {}
 
   async findAll() {
-    return this.categoryModel.find().populate('author');
+    return this.categoryModel.find();
   }
 
   async findOne(id: string) {

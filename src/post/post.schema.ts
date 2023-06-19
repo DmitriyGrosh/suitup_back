@@ -7,13 +7,37 @@ import { Category } from '../category/category.schema';
 
 export type PostDocument = Post & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Post {
   @Transform(({ value }) => value.toString())
   _id: ObjectId;
 
   @Prop()
   title: string;
+
+	@Prop()
+	description: string;
+
+	@Prop()
+	startDate: Date;
+
+	@Prop()
+	endDate: Date;
+
+	@Prop()
+	minPrice: number;
+
+	@Prop()
+	maxPrice: number;
+
+	@Prop()
+	ticketsNumber: number;
+
+	@Prop()
+	email: string;
+
+	@Prop()
+	phone: string;
 
   @Prop({
     set: (content: string) => {

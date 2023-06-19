@@ -48,6 +48,7 @@ export class CategoryController {
   @UseGuards(AccessTokenGuard)
   @Delete(':id')
   async deleteCategory(@Param() { id }: ParamsWithId) {
+		console.log('==========>id', id);
     return this.categoriesService.delete(id);
   }
 
